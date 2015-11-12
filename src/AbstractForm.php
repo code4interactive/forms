@@ -18,6 +18,9 @@ class AbstractForm {
 
     protected $configPath;
 
+    /**
+     * @var array
+     */
     protected $config;
 
     protected $values;
@@ -60,8 +63,8 @@ class AbstractForm {
         if (is_null($configPath) || !is_string($configPath) || $configPath == '') {
             throw new \Exception('Config path should be string');
         }
-        $config = trim($configPath, '/');
-        $yaml = \File::get(app_path().'/'.$config);
+        $configPath = trim($configPath, '/');
+        $yaml = \File::get(app_path().'/'.$configPath);
         $this->config = Yaml::parse($yaml);
         $this->loadFromConfigArray($this->config);
     }

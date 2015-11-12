@@ -21,6 +21,8 @@ abstract class AbstractField implements FieldsInterface {
     protected $rules;
     protected $customRules;
 
+    protected $optionKeys;
+
     protected $_viewNamespace = 'forms::';
     protected $_view; //Widok do załadowania
     protected $_type; //Typ elementu (np text, password) ten sam widok tylko inny typ
@@ -81,7 +83,7 @@ abstract class AbstractField implements FieldsInterface {
 
     /**
      * Gets or sets attributes
-     * @param null $data
+     * @param null|array $data
      * @return Attributes
      */
     public function attributes($data = null) {
@@ -95,7 +97,7 @@ abstract class AbstractField implements FieldsInterface {
      * Sets or gets value
      * @param $value
      * @param $key
-     * @return FieldsInterface $this
+     * @return FieldsInterface|mixed $this
      */
     public function value($value = null, $key = null) {
 
