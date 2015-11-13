@@ -73,4 +73,15 @@ class AbstractFieldTest extends TestCase {
         $this->assertEquals(['test_value','test_value2'], $this->_object->value());
     }
 
+    public function testAddingRules() {
+        $this->_object->addRule("required");
+        $this->assertEquals("required", $this->_object->rules());
+    }
+
+    public function testRemoveRules() {
+        $this->_object->rules("required|min:10");
+        $this->_object->removeRule("required");
+        $this->assertEquals("min:10", $this->_object->rules());
+    }
+
 }

@@ -234,6 +234,34 @@ abstract class AbstractField implements FieldsInterface {
         return $this;
     }
 
+    /**
+     * Adds rule if it don't exist
+     * @param $rule
+     * @return $this
+     */
+    public function addRule($rule) {
+        $rules = explode("|", $this->rules);
+        if (array_search($rule, $rules) === false) {
+            array_push($rules, $rule);
+        }
+        $this->rules = trim(implode("|", $rules), "|");
+        return $this;
+    }
+
+    /**
+     * Removes rule from field
+     * @param $rule
+     * @return $this
+     */
+    public function removeRule($rule) {
+        $rules = explode("|", $this->rules);
+        if (($index = array_search($rule, $rules)) !== false) {
+            unset($rules[$index]);
+        }
+        $this->rules = trim(implode("|", $rules), "|");
+        return $this;
+    }
+
 
     /**
      * @param null $customRules
