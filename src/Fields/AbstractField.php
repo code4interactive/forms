@@ -16,6 +16,12 @@ abstract class AbstractField implements FieldsInterface {
 
     protected $attributes;
 
+    /**
+     * List of all properties
+     * @var array
+     */
+    protected $properties = [];
+
     protected $value;
 
     protected $rules;
@@ -45,11 +51,13 @@ abstract class AbstractField implements FieldsInterface {
         //Attributes
         if (array_key_exists('attributes', $data)) {
             $this->attributes($data['attributes']);
+            unset($data['attributes']);
         }
 
         //Name
         if (array_key_exists('name', $data)) {
             $this->name = $data['name'];
+            unset($data['name']);
         } else {
             $this->name = $this->fieldName;
         }
@@ -60,6 +68,7 @@ abstract class AbstractField implements FieldsInterface {
         //ID
         if (array_key_exists('id', $data)) {
             $this->id = $data['id'];
+            unset($data['id']);
         } else {
             $this->id = $this->fieldName;
         }
@@ -67,16 +76,25 @@ abstract class AbstractField implements FieldsInterface {
         //Values
         if (array_key_exists('value', $data)) {
             $this->value($data['value']);
+            unset($data['value']);
         }
 
         //Rules
         if (array_key_exists('rules', $data)) {
             $this->rules($data['rules']);
+            unset($data['rules']);
         }
 
+
+        //Setting remaining properties
         //Title
         if (array_key_exists('title', $data)) {
             $this->title($data['title']);
+            unset($data['title']);
+        }
+
+        foreach ($data as $propertyName => $value) {
+            $this->setProperty($propertyName, $value);
         }
 
     }
@@ -262,7 +280,6 @@ abstract class AbstractField implements FieldsInterface {
         return $this;
     }
 
-
     /**
      * @param null $customRules
      * @return string|FieldsInterface
@@ -275,7 +292,6 @@ abstract class AbstractField implements FieldsInterface {
         }
         return $this;
     }
-
 
     /**
      * Renders element
@@ -293,6 +309,52 @@ abstract class AbstractField implements FieldsInterface {
     }
 
     /**
+     * Sets property
+     * @param string $propertyName
+     * @param mixed $value
+     * @return $this
+     */
+    public function setProperty($propertyName, $value) {
+        if (property_exists($this, $propertyName)) {
+            $this->$propertyName = $value;
+        } else {
+            $this->properties[$propertyName] = $value;
+        }
+        return $this;
+    }
+
+    /**
+     * Gets property
+     * @param string $propertyName
+     * @return mixed
+     */
+    public function getProperty($propertyName) {
+        if (property_exists($this, $propertyName)) {
+            return $this->$propertyName;
+        } else
+        {
+            return array_key_exists($propertyName, $this->properties) ? $this->properties[$propertyName] : '';
+        }
+    }
+
+    /**
+     * Magic methods
+     * @param $method
+     * @param $args
+     * @return AbstractField|mixed
+     */
+    public function __call($method, $args) {
+        if (count($args) == 0) {
+            return $this->getProperty($method);
+        }
+
+        if (count($args) == 1) {
+            return $this->setProperty($method, $args[0]);
+        }
+    }
+
+
+    /**
      * Checks if passed array is associative or indexed
      * @param $arr
      * @return bool
@@ -300,5 +362,6 @@ abstract class AbstractField implements FieldsInterface {
     private function isAssoc($arr) {
         return array_keys($arr) !== range(0, count($arr) - 1);
     }
+
 
 }
