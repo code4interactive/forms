@@ -3,7 +3,7 @@ namespace Code4\Forms\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
-class Forms extends Facade
+class FormsFactory extends Facade
 {
     /**
      * Get the registered name of the component.
@@ -12,6 +12,6 @@ class Forms extends Facade
      */
     protected static function getFacadeAccessor()
     {
-        return 'forms';
+        return 'formsFactory';
     }
 }

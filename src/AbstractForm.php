@@ -63,8 +63,8 @@ class AbstractForm {
         if (is_null($configPath) || !is_string($configPath) || $configPath == '') {
             throw new \Exception('Config path should be string');
         }
-        $configPath = trim($configPath, '/');
-        $yaml = \File::get(app_path().'/'.$configPath);
+        $configPath = rtrim($configPath, '/');
+        $yaml = \File::get($configPath);
         $this->config = Yaml::parse($yaml);
         $this->loadFromConfigArray($this->config);
     }
@@ -96,17 +96,6 @@ class AbstractForm {
         return $this->fields->get($fieldName);
     }
 
-    /**
-     * Makes new field from passed class
-     * @param string $fieldName
-     * @param string $fieldClass
-     * @param array $args
-     * @return Fields\FieldsInterface
-     */
-    public function make($fieldName, $fieldClass, $args = []) {
-        $this->fields->put($fieldName, new $fieldClass($fieldName, $args));
-        return $this->get($fieldName);
-    }
 
     /**
      * Sets values for all fields from passed array or object (eg. model).
@@ -254,6 +243,17 @@ class AbstractForm {
         return [$rules, $customRules];
     }
 
+    /**
+     * Makes new field from passed class
+     * @param string $fieldName
+     * @param string $fieldClass
+     * @param array $args
+     * @return Fields\FieldsInterface
+     */
+    public function make($fieldName, $fieldClass, $args = []) {
+        $this->fields->put($fieldName, \FormsFactory::makeField($fieldClass, $fieldName, $args));
+        return $this->get($fieldName);
+    }
 
     /**
      * Calls requested element from fields array or creates it
@@ -266,25 +266,21 @@ class AbstractForm {
 
         if (count($args) > 0) {
             $fieldName = $args[0];
+
+            //Looking for existing field by its name
             if ($this->fields->has($fieldName)) {
                 return $this->get($fieldName);
             }
-            $args = array_key_exists(1, $args) ? $args[1] : [];
 
+            //No field? Create one!
+
+            //If there is no second argument (no initial data for field)
+            $data = array_key_exists(1, $args) ? $args[1] : [];
+
+            //Method used defines field type
             $type = $method;
-            //Field class
-            $class = '\Code4\Forms\Fields\\'.$type;
-            if (class_exists($class)) {
-                return $this->make($fieldName, $class, $args);
-            }
 
-            //Default class if field class not found
-            $class = \Code4\Forms\Fields\text::class;
-            if (class_exists($class)) {
-                return $this->make($fieldName, $class, $args);
-            }
-
-            throw new \Exception('Unable to load class: '.$class);
+            return $this->make($fieldName, $type, $data);
         }
     }
 

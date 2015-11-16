@@ -8,8 +8,8 @@ use Illuminate\Support\ServiceProvider;
 class FormsServiceProvider extends ServiceProvider {
 
     public function register() {
-        $this->app->singleton('forms', function($app) {
-            //return new Menu($app['files'], $app['config'], $app['request']);
+        $this->app->singleton('formsFactory', function($app) {
+            return new FormsFactory($app);
         });
 
         $this->registerAliases();
@@ -24,7 +24,7 @@ class FormsServiceProvider extends ServiceProvider {
 
     private function registerAliases() {
         $aliasLoader = AliasLoader::getInstance();
-        $aliasLoader->alias('Forms', Facades\Forms::class);
+        $aliasLoader->alias('FormsFactory', Facades\FormsFactory::class);
     }
 
 }
