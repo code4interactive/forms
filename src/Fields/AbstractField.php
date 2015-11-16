@@ -65,14 +65,6 @@ abstract class AbstractField implements FieldsInterface {
         //Pre set title
         $this->title($this->name);
 
-        //ID
-        if (array_key_exists('id', $data)) {
-            $this->id = $data['id'];
-            unset($data['id']);
-        } else {
-            $this->id = $this->fieldName;
-        }
-
         //Values
         if (array_key_exists('value', $data)) {
             $this->value($data['value']);
@@ -165,6 +157,9 @@ abstract class AbstractField implements FieldsInterface {
                 $key = $this->optionKeys[0];
             }
 
+            //If still no key - try using field name as key
+
+
             if (!$key) {
                 return $this;
             }
@@ -175,7 +170,7 @@ abstract class AbstractField implements FieldsInterface {
                 if (is_object($o)) {
                     $this->value[] = $o->$key;
                 } else {
-                    //If passed object is not an iterable collection foreach will iterate over properties
+                    //If passed object is not an iterable collection loop will iterate over properties
                     if ($objectKey == $key) {
                         $this->value[] = $o;
                         return $this;

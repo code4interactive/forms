@@ -5,6 +5,7 @@ namespace Code4\Forms\Fields;
 class select extends AbstractField {
 
     protected $_view = 'select';
+    protected $_type = 'select';
 
     protected $options;
     protected $optionKeys;

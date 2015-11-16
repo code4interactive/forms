@@ -29,6 +29,7 @@ class AbstractForm {
      * @var Request
      */
     protected $request;
+
     /**
      * Custom error messages
      * @var array
@@ -89,11 +90,20 @@ class AbstractForm {
     }
 
     /**
+     * Gets field from collection
      * @param $fieldName
      * @return Fields\FieldsInterface
      */
     public function get($fieldName) {
         return $this->fields->get($fieldName);
+    }
+
+    /**
+     * Gets title of field
+     * @param $fieldName
+     */
+    public function title($fieldName) {
+        return $this->get($fieldName)->title();
     }
 
 
@@ -182,9 +192,8 @@ class AbstractForm {
      */
     public function response($redirect = null) {
         if ($this->request->ajax() || $this->request->wantsJson()) {
-            return new JsonResponse($this->messageBag->toArray(), 422);
+            return new JsonResponse(['formErrors' =>$this->messageBag->toArray()], 422);
         }
-
         return \Redirect::to($redirect)->withErrors($this->messageBag->toArray());
     }
 

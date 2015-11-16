@@ -6,6 +6,10 @@
     {!! $checkbox !!}
 @endforeach
 
+@foreach($form->get('groupRadio')->group() as $radio)
+    {!! $radio !!}
+@endforeach
+
 <?php
 
 

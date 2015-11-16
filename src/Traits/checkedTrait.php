@@ -12,7 +12,12 @@ trait checkedTrait
      * @param string $oName ????
      * @return $this
      */
-    public function checked($value, $oKey = null, $oName = null) {
+    public function checked($value = null, $oKey = null, $oName = null) {
+
+        if (is_null($value)) {
+            return $this->getChecked();
+        }
+
         //Checkboxy $this->value powinny mieć wyłącznie jako "string"
         if (is_array($this->value)) {
             $this->value = $this->value[0];

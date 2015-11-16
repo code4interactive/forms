@@ -20,7 +20,9 @@ trait groupFieldTrait {
 
         if (is_array($elements)) {
             foreach ($elements as $fieldName => $fieldValue) {
-                $this->group->put($fieldName, \FormsFactory::makeField($this->_type, $fieldName, $fieldValue));
+                $newField = \FormsFactory::makeField($this->_type, $fieldName, $fieldValue);
+
+                $this->group->put($fieldName, $newField);
             }
         }
 

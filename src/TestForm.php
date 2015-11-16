@@ -4,8 +4,6 @@ namespace Code4\Forms;
 
 class TestForm extends AbstractForm {
 
-    protected $configPath = 'Modules/Forms/test.yml';
-
     protected $messages = [
         'required' => 'Pole :attribute jest wymagane'
     ];
@@ -22,6 +20,8 @@ class TestForm extends AbstractForm {
     public function __construct() {
         parent::__construct();
         $this->loadFromConfigYaml(__DIR__ . '/../config/test.yml');
+
+
     }
 
     //Custom validation class

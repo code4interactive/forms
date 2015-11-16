@@ -41,13 +41,36 @@ select:
 
 groupCheckbox:
   type: checkbox
+  rules: required
+  name: test[]
   attributes:
     class: form-control
   group:
     checkbox1:
+      name: test[]
+      checked: checked
       label: checkbox 1
     checkbox2:
+      name: test[]
       label: checkbox 2
+
+groupRadio:
+  type: radio
+  rules: required
+  name: testradio[]
+  attributes:
+    class: form-control
+  group:
+    radio1:
+      name: testradio[]
+      value: test
+      label: Label
+    radio2:
+      name: testradio[]
+      value: test2
+      label: Label 2
+      checked: checked
+
 
 city:
   type: text
