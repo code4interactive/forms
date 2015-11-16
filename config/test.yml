@@ -1,0 +1,92 @@
+text:
+  type: text
+  rules: required
+  title: Text
+  attributes:
+    class: form-control
+    placeholder: Text
+
+email:
+  type: email
+  rules: required|email
+  title: Email
+  attributes:
+    class: form-control
+    placeholder: Email
+
+checkbox:
+  type: checkbox
+  attributes:
+    class: form-control
+    placeholder: Adres firmy
+
+checkbox:
+  type: checkbox
+  attributes:
+    class: form-control
+    placeholder: Adres firmy
+
+select:
+  type: select
+  attributes:
+    class: form-control chosen-select m-b
+    multiple:
+    data-placeholder: Wybierz role ...
+  options:
+    el1: opis1
+    el2: opis2
+    el3: opis3
+  option-keys: [id, name]
+  value: [el1,el2]
+
+groupCheckbox:
+  type: checkbox
+  attributes:
+    class: form-control
+  group:
+    checkbox1:
+      label: checkbox 1
+    checkbox2:
+      label: checkbox 2
+
+city:
+  type: text
+  attributes:
+    class: form-control
+    placeholder: Miasto
+
+country:
+  type: text
+  attributes:
+    class: form-control
+    placeholder: Kraj
+
+nip:
+  type: text
+  attributes:
+    class: form-control
+    placeholder: NIP
+
+regon:
+  type: text
+  attributes:
+    class: form-control
+    placeholder: Regon
+
+email:
+  type: email
+  attributes:
+    class: form-control
+    placeholder: Adres email
+
+phone:
+  type: text
+  attributes:
+    class: form-control
+    placeholder: Telefon
+
+fax:
+  type: text
+  attributes:
+    class: form-control
+    placeholder: Fax

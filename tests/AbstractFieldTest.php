@@ -84,4 +84,12 @@ class AbstractFieldTest extends TestCase {
         $this->assertEquals("min:10", $this->_object->rules());
     }
 
+    public function testProperties() {
+        $this->_object->setProperty('property1', 'value1');
+        $this->_object->property2('value2');
+
+        $this->assertEquals("value1", $this->_object->getProperty('property1'));
+        $this->assertEquals("value2", $this->_object->property2());
+    }
+
 }
