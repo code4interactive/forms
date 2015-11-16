@@ -1,1 +1,1 @@
-<input id="form-{{$el->id()}}" type="{{$el->_type()}}" name="{{$el->name()}}" value="{{$el->getValue()}}" {!!$el->getChecked()!!} {!! $el->attrib() !!}>
+<input id="form-{{$el->id()}}" type="{{$el->_type()}}" name="{{$el->name()}}" value="{{$el->value()}}" {!!$el->getChecked()!!} {!! $el->attributes() !!}>

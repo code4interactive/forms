@@ -8,6 +8,8 @@ trait checkedTrait
     /**
      * Sprawdza czy pole powinno być zaznaczone
      * @param string|array $value
+     * @param string $oKey
+     * @param string $oName ????
      * @return $this
      */
     public function checked($value, $oKey = null, $oName = null) {
@@ -65,6 +67,7 @@ trait checkedTrait
             }
             return $this;
         }
+
 
         if (is_object($value) && $oKey) {
             if (property_exists($value, $oKey))
