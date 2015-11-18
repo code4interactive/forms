@@ -9,7 +9,7 @@ use Validator;
 use Symfony\Component\Yaml\Yaml;
 use Illuminate\Support\MessageBag;
 
-class AbstractForm {
+class AbstractForm  {
 
     /**
      * @var Collection;

@@ -7,7 +7,7 @@ class FormsFactory {
     private $app;
 
     public function __construct($app) {
-        $this->private = $app;
+        $this->app = $app;
     }
 
     /**
