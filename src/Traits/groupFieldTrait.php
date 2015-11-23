@@ -7,7 +7,6 @@ trait groupFieldTrait {
 
     protected $group = null;
 
-
     public function group($elements = null) {
 
         if (is_null($this->group)) {
@@ -21,11 +20,18 @@ trait groupFieldTrait {
         if (is_array($elements)) {
             foreach ($elements as $fieldName => $fieldValue) {
                 $newField = \FormsFactory::makeField($this->_type, $fieldName, $fieldValue);
-
                 $this->group->put($fieldName, $newField);
             }
         }
+    }
 
+    /**
+     * Fixes rules for group fields
+     */
+    public function groupRules() {
+        foreach($this->group as $element) {
+
+        }
     }
 
 }
