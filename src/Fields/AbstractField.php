@@ -100,6 +100,9 @@ abstract class AbstractField implements FieldsInterface {
         if ($data !== null) {
             $this->attributes = new Attributes($data);
         }
+        if (is_null($this->attributes)) {
+            $this->attributes = new Attributes();
+        }
         return $this->attributes;
     }
 
@@ -235,6 +238,7 @@ abstract class AbstractField implements FieldsInterface {
     }
 
     /**
+     * Sets or retrives rules for field and child fields
      * @param null $rules
      * @return string|FieldsInterface
      */
@@ -245,6 +249,35 @@ abstract class AbstractField implements FieldsInterface {
             $this->rules = $rules;
         }
         return $this;
+    }
+
+    /**
+     * Returns name=>rules array for validator
+     * @return array
+     */
+    public function getRulesForValidator() {
+        if ($this->rules == '') {
+            return [];
+        }
+
+        return [$this->getDotNotatedName() => $this->rules];
+    }
+
+    /**
+     * Returns name of field in 'dot' notation. Eg. field[] -> field, field[test] -> field.test
+     * @return string
+     */
+    public function getDotNotatedName() {
+        $name = $this->name();
+
+        //multi value fields are validated as single value
+        $name = str_replace('[]','',$name);
+
+        //if in config field field is named field[test][tes2] replace that to: field.test.test2
+        $pattern = '/\[{1}([^\]]+)\]{1}/';
+        //preg_replace("/\[{1}([^\]]+)\]{1}/", ".$1", $input_lines);
+        $name = preg_replace($pattern, ".$1", $name);
+        return $name;
     }
 
     /**

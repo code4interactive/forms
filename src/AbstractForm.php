@@ -137,8 +137,13 @@ class AbstractForm  {
 
         $this->request = $request;
 
+        //Check for "multiple" fields eg. role[]
+
+
         //Collect rules from fields
         list($rules, $customRules) = $this->collectRules();
+        //var_dump($rules);
+        /*var_dump($request->all());*/
 
         //Make validator
         $validator = Validator::make($request->all(), $rules, $this->messages);
@@ -152,7 +157,7 @@ class AbstractForm  {
         //Get messages
         $this->messageBag = $validator->messages();
 
-        //Do custom validation set in fields
+        //Do custom validation in fields ($field->customRules property)
         foreach($customRules as $fieldName => $rule) {
             foreach($rule as $cr) {
                 if ($message = $this->callCustomRules($cr, $request)) {
@@ -161,7 +166,7 @@ class AbstractForm  {
             }
         }
 
-        //Do custom validation set in form class (customRules property)
+        //Do custom validation in form class ($form->customRules property)
         foreach ($this->customRules as $fieldName => $cr) {
             if ($message = $this->callCustomRules($cr, $request)) {
                 $this->messageBag->add($fieldName, $message);
@@ -242,9 +247,10 @@ class AbstractForm  {
         $rules = [];
         $customRules = [];
         foreach($this->fields as $field) {
-            if ($field->rules()) {
-                $rules[$field->name()] = $field->rules();
-            }
+
+            $fieldRule = $field->getRulesForValidator();
+            $rules = array_merge($rules, $fieldRule);
+
             if ($field->customRules()) {
                 $customRules[$field->name()] = $field->customRules();
             }
