@@ -19,7 +19,6 @@ php artisan vendor:publish --provider="Code4\Menu\MenuServiceProvider"
 ## Usage
 
 
-
 Komponent obsługujący formularze pozwala uprościć kod HTML oraz kodowanie związane z repopulacją pól np. przy edycji.
 
 Definiowanie formularza zaczyna się od pliku konfiguracyjnego w formacie YAML. Może od znajdować się w dowolnym miejscu w katalogu app/.
@@ -31,6 +30,7 @@ Definiowanie formularza zaczyna się od pliku konfiguracyjnego w formacie YAML. 
 #!yaml
 email:
   type: email
+  roles: required
   attributes:
     class: form-control
     placeholder: Adres email
@@ -56,42 +56,62 @@ role:
   option-keys: [id, name]
 ```
 
-Następnie w kontrolerze należy utworzyć instancję klasy C4Form wskazując plik konfiguracyjny:
+### Objekt ###
+
+Formularz tworzymy przez stworzenie własnej klasy dziedziczącej po AbstractForm. 
+Pozwala to na konfigurację dodatkowych opcji związanych nazewnictwem pól, konfiguracją własnych walidatorów itp. 
 
 
 ```
 #!php
+
 <?php
-$form = new C4Form('Sciezka/Do/Pliku/editUser');
-//LUB
-$form = new C4Form();
-$form->load('Sciezka/Do/Pliku/editUser');
-```
 
-C4Form jest resolvowany przez IoC Laravela więc można go zainicjalizować przekazując go np. w parametrze metody kontrolera:
+use Code4\Forms\AbstractForm;
 
+class CreateUserForm extends AbstractForm {
 
-```
-#!php
-<?php
-public function edit(C4Form $form)
-{
-   $form->load('Sciezka/Do/Pliku/editUser');
+    public function __construct() {
+        parent::__construct();
+        $this->loadFromConfigYaml('Sciezka/Do/Pliku/editUser.yml');
+    }
+
 }
+
 ```
-Mając instancjonowany obiekt klasy C4Form możemy na nim wykonywać modyfikacje wskazane w opisach elementów. Np. ustalanie opcji elementu select. Pierwsze wywołanie get() na obiekcie powoduje utworzenie i zapamiętanie wewnątrz obiektu instancji żądanego elementu. Np:
+
+Dla prostych formularzy, możemy utworzyć 'inline' obiekt z AbstractForm:
 
 ```
 #!php
+
 <?php
-$form = new C4Form();
-$form->load('Sciezka/Do/Pliku/editUser');
-$form->get('role')->options(['wartosc1'=>'opis 1', 'wartosc2'=>'opis 2']);
+  $form = new AbstractForm();
+  $form->loadFromConfigYaml('Sciezka/Do/Pliku/editUser.yml');
+  
+  if (!$form->validate($request)) {
+    return $form->response();
+  }
+  
 ```
 
 
-Kolejnym krokiem jest przekazanie obiektu do widoku a następnie wyświetlanie pól w kodzie HTML:
+Dla bardzo prostych formularzy z polami utworzonymi recznie w widoku nie trzeba tworzyć pliku konfiguracyjnego:
 
+```
+#!php
+
+<?php
+  $form = new AbstractForm();
+  if (!$form->validate($request, ['email' => 'required', 'password' => 'required'])) {
+    return $form->response();
+  }
+  
+```
+
+
+
+### Widok ###
 ```
 #!html
 
@@ -106,11 +126,12 @@ Kolejnym krokiem jest przekazanie obiektu do widoku a następnie wyświetlanie p
 
 ```
 #!yaml
-email:                         //ID pola
+email:
   id: form-email
   name: form-email
   type: email
   value: test@test.pl
+  rules: required|min:10
   attributes:
     class: form-control
     placeholder: Adres email
@@ -118,7 +139,7 @@ email:                         //ID pola
 
 ID pola musi być unikalne dla pliku konfiguracyjnego ponieważ służy do odwoływania się do tego pola. Pozostałe ustawienia:
 
- - id: ID elementu HTML (jeżeli nie zostanie ustawione użyte będzie ID pola)
+ - id: ID elementu HTML 
 
  - name: Name elementu (jeżeli nie zostanie ustawione użyte będzie ID pola)
 
@@ -141,7 +162,7 @@ zostanie wyświetlone jako:
 
 ```
 #!html
-<select id="test" name="test" class="form-control chosen-select" multiple="" data-placeholder="Wybierz role ...">
+<select name="test" class="form-control chosen-select" multiple="" data-placeholder="Wybierz role ...">
 ```
 
 
