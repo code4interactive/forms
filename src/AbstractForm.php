@@ -131,19 +131,18 @@ class AbstractForm  {
     /**
      * Validates all fields with Laravel and custom rules
      * @param Request $request
+     * @param array $passedRules
      * @return bool
      */
-    public function validate(Request $request) {
+    public function validate(Request $request, $passedRules = []) {
 
         $this->request = $request;
 
-        //Check for "multiple" fields eg. role[]
-
-
         //Collect rules from fields
         list($rules, $customRules) = $this->collectRules();
-        //var_dump($rules);
-        /*var_dump($request->all());*/
+
+        //Combine passed rules with those extracted from fields
+        $rules = array_merge($rules, $passedRules);
 
         //Make validator
         $validator = Validator::make($request->all(), $rules, $this->messages);
