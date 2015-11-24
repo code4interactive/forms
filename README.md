@@ -26,8 +26,7 @@ Definiowanie formularza zaczyna się od pliku konfiguracyjnego w formacie YAML. 
 Ścieżka używana w przykładach poniżej: **app/Sciezka/Do/Pliku/editUser.yml**
 
 
-```
-#!yaml
+```#!yaml
 email:
   type: email
   roles: required
@@ -62,8 +61,7 @@ Formularz tworzymy przez stworzenie własnej klasy dziedziczącej po AbstractFor
 Pozwala to na konfigurację dodatkowych opcji związanych nazewnictwem pól, konfiguracją własnych walidatorów itp. 
 
 
-```
-#!php
+```php
 
 <?php
 
