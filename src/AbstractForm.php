@@ -47,6 +47,8 @@ class AbstractForm  {
      */
     protected $customRules = [];
 
+    protected $customFieldRules = [];
+
     public function __construct() {
         $this->fields = new Collection();
         $this->messageBag = new MessageBag();
@@ -139,7 +141,7 @@ class AbstractForm  {
         $this->request = $request;
 
         //Collect rules from fields
-        list($rules, $customRules) = $this->collectRules();
+        list($rules, $customFieldRules) = $this->collectRules();
 
         //Combine passed rules with those extracted from fields
         $rules = array_merge($rules, $passedRules);
@@ -157,7 +159,8 @@ class AbstractForm  {
         $this->messageBag = $validator->messages();
 
         //Do custom validation in fields ($field->customRules property)
-        foreach($customRules as $fieldName => $rule) {
+        $customFieldRules = array_merge_recursive($customFieldRules, $this->customFieldRules);
+        foreach($customFieldRules as $fieldName => $rule) {
             foreach($rule as $cr) {
                 if ($message = $this->callCustomRules($cr, $request)) {
                     $this->messageBag->add($fieldName, $message);
@@ -235,6 +238,18 @@ class AbstractForm  {
             $attributeNames[$field->name()] = $field->title();
         }
         return $attributeNames;
+    }
+
+
+    /**
+     * Add custom callable rule to field
+     * @param string $fieldName
+     * @param $rule
+     * @return AbstractForm
+     */
+    public function customFieldRule($fieldName, $rule) {
+        $this->customFieldRules[$fieldName][] = $rule;
+        return $this;
     }
 
 
