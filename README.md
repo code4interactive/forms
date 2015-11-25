@@ -238,13 +238,30 @@ Jeżeli z jakiegoś powodu do pobrania wartości potrzebny jest inny klucz możn
 $form->get('form-role')->options($roles)->value($user->roles, 'id')
 ```
 
-
 # Lista elementów #
 
+```yaml
+
+field1: 
+    type: password
+field5:
+    type: onOffSwitch
+    title: Field title
+field10:
+    type: separator
+field11:
+    type: header
+    title: Header
+field12:
+    type: htmlTag
+    content: Tag content
+    tag: div
+    attributes:
+        class: text-center
+
+```
+
 * [OnOffSwitch](C4Form/OnOffSwitch)
-
-
-
 
 ## Testing
 

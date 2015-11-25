@@ -34,6 +34,14 @@ abstract class AbstractField implements FieldsInterface {
     protected $_type; //Typ elementu (np text, password) ten sam widok tylko inny typ
 
     /**
+     * Pola specjalne dla których nie nadajemy automatycznie klas (form-control) itp.
+     * @var array
+     */
+    protected $specialFields = [
+        'separator', 'header', 'htmlTag'
+    ];
+
+    /**
      * Constructs base element
      * @param $fieldName
      * @param array $data
@@ -87,6 +95,11 @@ abstract class AbstractField implements FieldsInterface {
 
         foreach ($data as $propertyName => $value) {
             $this->setProperty($propertyName, $value);
+        }
+
+        //If classes not set - default = form-control
+        if (!$this->attributes()->has('class') && !in_array($this->_type,$this->specialFields)) {
+            $this->attributes()->add('class', 'form-control');
         }
 
     }
@@ -160,8 +173,10 @@ abstract class AbstractField implements FieldsInterface {
                 $key = $this->optionKeys[0];
             }
 
-            //If still no key - try using field name as key
-
+            //If still no key - try using name as key??
+            if (is_null($key)) {
+                $key = $this->name;
+            }
 
             if (!$key) {
                 return $this;
@@ -170,7 +185,7 @@ abstract class AbstractField implements FieldsInterface {
             $this->value = [];
             //iterating over $value object because it may be an collection eg. results from DB
             foreach($value as $objectKey=>$o) {
-                if (is_object($o)) {
+                if (is_object($o) && property_exists($o, $key)) {
                     $this->value[] = $o->$key;
                 } else {
                     //If passed object is not an iterable collection loop will iterate over properties
