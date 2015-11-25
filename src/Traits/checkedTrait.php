@@ -103,4 +103,26 @@ trait checkedTrait
         return $this->checked ? 'checked' : '';
     }
 
+    /**
+     * Dla pól checkbox value powinno ustawiać checked na true lub false a nie zastepowac warość
+     * @param null $value
+     * @param null $key
+     * @return null|string
+     */
+    public function value($value = null, $key = null) {
+        if (is_null($value)) {
+            return parent::value($value, $key);
+        }
+        $this->checked($value);
+    }
+
+    /**
+     * Jeżeli chcemy zastąpić wartość
+     * @param null $value
+     * @param null $key
+     */
+    public function setValue($value = null, $key = null) {
+        parent::value($value, $key);
+    }
+
 }

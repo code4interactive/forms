@@ -108,6 +108,13 @@ class AbstractForm  {
         return $this->get($fieldName)->title();
     }
 
+    /**
+     * Returns all fields
+     * @return Collection
+     */
+    public function all() {
+        return $this->fields;
+    }
 
     /**
      * Sets values for all fields from passed array or object (eg. model).
@@ -128,7 +135,6 @@ class AbstractForm  {
             }
         }
     }
-
 
     /**
      * Validates all fields with Laravel and custom rules
