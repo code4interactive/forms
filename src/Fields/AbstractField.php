@@ -10,6 +10,11 @@ abstract class AbstractField implements FieldsInterface {
 
     protected $title;
 
+    protected $label;
+
+    /**
+     * @var string Index elementu w pliku konfiguracyjnym
+     */
     protected $fieldName;
 
     protected $id;
@@ -75,7 +80,7 @@ abstract class AbstractField implements FieldsInterface {
 
         //Values
         if (array_key_exists('value', $data)) {
-            $this->value($data['value']);
+            $this->setValue($data['value']);
             unset($data['value']);
         }
 
@@ -85,12 +90,17 @@ abstract class AbstractField implements FieldsInterface {
             unset($data['rules']);
         }
 
-
         //Setting remaining properties
         //Title
         if (array_key_exists('title', $data)) {
             $this->title($data['title']);
             unset($data['title']);
+        }
+
+        //Title
+        if (array_key_exists('label', $data)) {
+            $this->label($data['label']);
+            unset($data['label']);
         }
 
         foreach ($data as $propertyName => $value) {
@@ -128,19 +138,13 @@ abstract class AbstractField implements FieldsInterface {
     public function value($value = null, $key = null) {
 
         if ($value === null) {
-            if (is_string($this->value)) {
-                return $this->value;
-            }
-            if (is_bool($this->value)) {
-                return $this->value;
-            }
             if (is_array($this->value) && count($this->value) == 1) {
-                return $this->value[0];
+                return (string)$this->value[0];
             }
             if (is_array($this->value) && count($this->value) > 1) {
                 return $this->value;
             }
-            return '';
+            return (string)$this->value;
         }
 
         // Store value as array if string or numeric
@@ -198,6 +202,17 @@ abstract class AbstractField implements FieldsInterface {
             return $this;
         }
         return $this;
+    }
+
+    /**
+     * Shortcut for values() method. Used to set value of field after initiation from config. Is needed for fields
+     * with checked traits where method is overrided
+     * @param null $value
+     * @param null $key
+     * @return FieldsInterface|mixed
+     */
+    public function setValue($value = null, $key = null) {
+        return $this->value($value = null, $key = null);
     }
 
     /**

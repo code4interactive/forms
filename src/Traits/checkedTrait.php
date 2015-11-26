@@ -25,12 +25,6 @@ trait checkedTrait
 
         $this->checked = false;
 
-        //Sprawdzamy typ przekazanych danych.
-        if (is_string($value)) {
-            $this->checked = $this->value == $value;
-            return $this;
-        }
-
         if (is_array($value)) {
             if (isAssoc($value)) {
                 //W przypadku tablicy asocjacyjnej ($key=>$val) jeśli $val jest typu bool to znaczy że $key == $this->value
@@ -92,6 +86,9 @@ trait checkedTrait
             $this->checked = $value;
             return $this;
         }
+
+        $this->checked = $this->value == $value;
+
         return $this;
     }
 
@@ -111,7 +108,7 @@ trait checkedTrait
      */
     public function value($value = null, $key = null) {
         if (is_null($value)) {
-            return parent::value($value, $key);
+            return parent::value();
         }
         $this->checked($value);
     }
@@ -122,7 +119,7 @@ trait checkedTrait
      * @param null $key
      */
     public function setValue($value = null, $key = null) {
-        parent::value($value, $key);
+        return parent::value($value, $key);
     }
 
 }

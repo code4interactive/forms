@@ -122,6 +122,9 @@ Dla bardzo prostych formularzy z polami utworzonymi recznie w widoku nie trzeba 
 email:
   id: form-email
   name: form-email
+  label: Podaj e-mail
+  title: E-mail
+  fieldLabel: tekst
   type: email
   value: test@test.pl
   rules: required|min:10
@@ -141,6 +144,12 @@ ID pola musi być unikalne dla pliku konfiguracyjnego ponieważ służy do odwo�
  - value: domyślna wartość pola (jeżeli jest typu bool - zostanie przekonwertowane przy renderingu pola do (string) czyli "1" dla true i "0" dla false)
 
  - attributes: Sekcja atrybutów elementu. W ramach tej sekcji można dodawać dowolną ilość atrybutów które zostaną wyświetlone w znaczniku html w formie klucz="wartosc" lub sam "klucz". Np:
+ 
+ - label: Nie obowiązkowe. Przy automatycznym generowaniu formularzy można wykożystać do wyświetlania opisu pola
+  
+ - title: Nie obowiązkowe. Nazwa pola przekazywana walidatorowi do wyświeltania komunikatów błędów
+  
+ - fieldLabel: Nie obowiązkowe. Wykorzystywane przy wyświetlaniu dodatkowych opisów obok pól typu checkbox 
 
 ``` yaml
 test:
