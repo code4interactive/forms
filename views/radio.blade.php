@@ -1,1 +1,1 @@
-<input  data-field-name="{{$el->getDotNotatedName()}}" type="{{$el->_type()}}" name="{{$el->name()}}" value="{{$el->value()}}" {!!$el->checked()!!} {!! $el->attributes() !!}> @if($el->label()) {!! $el->label() !!} @endif
+<input  data-field-name="{{$el->getDotNotatedName()}}" type="{{$el->_type()}}" name="{{$el->name()}}" value="{{$el->value()}}" {!!$el->getChecked()!!} {!! $el->attributes() !!}> @if($el->label()) {!! $el->label() !!} @endif

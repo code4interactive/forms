@@ -9,13 +9,12 @@ trait checkedTrait
      * Sprawdza czy pole powinno być zaznaczone
      * @param string|array $value
      * @param string $oKey
-     * @param string $oName ????
      * @return $this
      */
-    public function checked($value = null, $oKey = null, $oName = null) {
+    public function checked($value = null, $oKey = null) {
 
         if (is_null($value)) {
-            return $this->getChecked();
+            return $this;
         }
 
         //Checkboxy $this->value powinny mieć wyłącznie jako "string"
@@ -48,8 +47,8 @@ trait checkedTrait
             return $this;
         }
 
-        //Jeżeli jest obiektem to obowiązkowo należy podać drugi parametr jakim jest nazwa pola
-        if (is_object($value) && $oKey && $oName) {
+        //Jeżeli jest kolekcją obiektów to obowiązkowo należy podać drugi parametr jakim jest nazwa pola
+        if (is_object($value) && $oKey) {
             foreach($value as $v)
             {
                 if (property_exists($v, $oKey))
@@ -67,7 +66,7 @@ trait checkedTrait
             return $this;
         }
 
-
+        //Jeżeli jest obiektem
         if (is_object($value) && $oKey) {
             if (property_exists($value, $oKey))
             {
@@ -110,7 +109,7 @@ trait checkedTrait
         if (is_null($value)) {
             return parent::value();
         }
-        $this->checked($value);
+        return $this->checked($value, $key);
     }
 
     /**

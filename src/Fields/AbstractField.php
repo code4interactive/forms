@@ -356,7 +356,9 @@ abstract class AbstractField implements FieldsInterface {
      * @return \Illuminate\View\View
      */
     public function render() {
-        return view($this->_viewNamespace.$this->_view, ['el'=>$this])->render();
+        if (isset($this->group) && count($this->group)) { $view = 'group'; }
+        else { $view = $this->_view; }
+        return view($this->_viewNamespace.$view, ['el'=>$this])->render();
     }
 
     /**

@@ -25,6 +25,17 @@ trait groupFieldTrait {
         }
     }
 
+    public function getGroup() {
+        return $this->group;
+    }
+
+    public function groupChecked($value) {
+        foreach($this->group as $fieldName => $field) {
+            $field->checked($value);
+        }
+        return $this;
+    }
+
     /**
      * Fixes rules for group fields
      */
