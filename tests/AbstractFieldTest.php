@@ -40,9 +40,9 @@ class AbstractFieldTest extends TestCase {
 
     public function testSettingFieldValueFromBool() {
         $this->_object->value(true);
-        $this->assertSame(true, $this->_object->value());
+        $this->assertSame((string)true, $this->_object->value());
         $this->_object->value(false);
-        $this->assertSame(false, $this->_object->value());
+        $this->assertSame((string)false, $this->_object->value());
     }
 
     public function testSettingFieldValueFromArray() {

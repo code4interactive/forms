@@ -212,7 +212,7 @@ abstract class AbstractField implements FieldsInterface {
      * @return FieldsInterface|mixed
      */
     public function setValue($value = null, $key = null) {
-        return $this->value($value = null, $key = null);
+        return $this->value($value, $key);
     }
 
     /**
