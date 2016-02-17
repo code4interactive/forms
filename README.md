@@ -1,4 +1,4 @@
-# Menu Package for Laravel
+# Form Package for Laravel
 
 [![Latest Version on Packagist][ico-version]][link-packagist]
 [![Build Status][ico-travis]][link-travis]
@@ -20,7 +20,7 @@ composer require code4interactive/forms
 
 Komponent obsługujący formularze pozwala uprościć kod HTML oraz kodowanie związane z repopulacją pól np. przy edycji.
 
-Definiowanie formularza zaczyna się od pliku konfiguracyjnego w formacie YAML. Może od znajdować się w dowolnym miejscu w katalogu app/.
+Definiowanie formularza zaczyna się od pliku konfiguracyjnego w formacie YAML.
 
 Ścieżka używana w przykładach poniżej: **app/Sciezka/Do/Pliku/editUser.yml**
 
@@ -54,7 +54,7 @@ role:
   option-keys: [id, name]
 ```
 
-### Objekt ###
+### Obiekt ###
 
 Formularz tworzymy przez stworzenie własnej klasy dziedziczącej po AbstractForm. 
 Pozwala to na konfigurację dodatkowych opcji związanych nazewnictwem pól, konfiguracją własnych walidatorów itp. 

@@ -119,19 +119,33 @@ class AbstractForm  {
     /**
      * Sets values for all fields from passed array or object (eg. model).
      * @param array|Arrayable $values
+     * @param null|string $key Nazwa kolumny pod którą znajduje się nazwa pola
+     * @param null|string $value Nazwa kolumny pod którą znajduje się wartość pola
      * @return null
      */
-    public function values($values) {
-        if (is_object($values) && $values instanceof Arrayable) {
+    public function values($values, $key = null, $value = null) {
+        if (is_object($values) && !is_null($key) && $values instanceof Arrayable) {
             $values = $values->toArray();
         }
-        if (!is_array($values)) {
-            return null;
-        }
-        foreach($this->fields as $fieldName => $field) {
-            $name = $field->name();
-            if (array_key_exists($name, $values)) {
-                $this->fields[$fieldName]->value($values[$name]);
+
+        if (is_array($values)) {
+            if (is_null($key) || is_null($value))
+            {
+                foreach ($this->fields as $fieldName => $field)
+                {
+                    $name = $field->name();
+                    if (array_key_exists($name, $values))
+                    {
+                        $this->fields[$fieldName]->value($values[$name]);
+                    }
+                }
+            } else {
+                foreach($values as $row) {
+                    $fields = $this->fields->toArray();
+                    if (isset($row->$key) && isset($row->$value) && array_key_exists($row->$key, $fields)) {
+                        $this->fields[$row->$key]->value($row->$value);
+                    }
+                }
             }
         }
     }
