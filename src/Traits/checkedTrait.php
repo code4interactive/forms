@@ -11,7 +11,7 @@ trait checkedTrait
      * @param string $oKey
      * @return $this
      */
-    public function checked($value = null, $oKey = null) {
+    public function checked($value, $oKey = null) {
 
         if (is_null($value)) {
             return $this;
@@ -51,7 +51,7 @@ trait checkedTrait
         if (is_object($value) && $oKey) {
             foreach($value as $v)
             {
-                if (property_exists($v, $oKey))
+                if (isset($v, $oKey))
                 {
                     $prop = $v->$oKey;
                     if (is_bool($prop))
@@ -68,7 +68,7 @@ trait checkedTrait
 
         //Jeżeli jest obiektem
         if (is_object($value) && $oKey) {
-            if (property_exists($value, $oKey))
+            if (isset($value, $oKey))
             {
                 $prop = $value->$oKey;
                 if (is_bool($prop))
@@ -105,10 +105,10 @@ trait checkedTrait
      * @param null $key
      * @return null|string
      */
-    public function value($value = null, $key = null) {
-        if (is_null($value)) {
-            return parent::value();
-        }
+    public function value($value, $key = null) {
+        //if (is_null($value)) {
+        //    return parent::value();
+        //}
         return $this->checked($value, $key);
     }
 

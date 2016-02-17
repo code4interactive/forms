@@ -135,9 +135,8 @@ abstract class AbstractField implements FieldsInterface {
      * @param $key
      * @return FieldsInterface|mixed $this
      */
-    public function value($value = null, $key = null) {
-
-        if ($value === null) {
+    public function value($value, $key = null) {
+        /*if ($value === null) {
             if (is_array($this->value) && count($this->value) == 1) {
                 return (string)$this->value[0];
             }
@@ -145,6 +144,9 @@ abstract class AbstractField implements FieldsInterface {
                 return $this->value;
             }
             return (string)$this->value;
+        }*/
+        if (is_null($value)) {
+            return $this;
         }
 
         // Store value as array if string or numeric
@@ -173,6 +175,7 @@ abstract class AbstractField implements FieldsInterface {
         //$optionKeys is used also to extract value=>description for option field
         //So in config $optionsKeys is an 2 element array
         if (is_object($value)) {
+
             if (is_null($key) && count($this->optionKeys) == 2) {
                 $key = $this->optionKeys[0];
             }
@@ -186,16 +189,18 @@ abstract class AbstractField implements FieldsInterface {
                 return $this;
             }
 
+
             $this->value = [];
             //iterating over $value object because it may be an collection eg. results from DB
             foreach($value as $objectKey=>$o) {
-                if (is_object($o) && property_exists($o, $key)) {
+                //TODO: Sprawdzanie czy istnieje atrybut obiektu przez isset() jest problematyczne kiedy atrybut ma wartość null (isset zwraca wtedy false)
+                //TODO: property_exists to rozwiązuje ale z kolei nie potrafi wykryć atrybutów które są dostępne wyłącznie przez magiczne metody (tak jak jest to zrobione w eloquent)
+                if (is_object($o) && isset($o->$key)) {
                     $this->value[] = $o->$key;
                 } else {
-                    //If passed object is not an iterable collection loop will iterate over properties
+                    //If object $value is not an iterable collection loop will iterate over properties
                     if ($objectKey == $key) {
                         $this->value[] = $o;
-                        return $this;
                     }
                 }
             }
@@ -213,6 +218,16 @@ abstract class AbstractField implements FieldsInterface {
      */
     public function setValue($value = null, $key = null) {
         return $this->value($value, $key);
+    }
+
+    public function getValue() {
+        if (is_array($this->value) && count($this->value) == 1) {
+            return (string)$this->value[0];
+        }
+        if (is_array($this->value) && count($this->value) > 1) {
+            return $this->value;
+        }
+        return (string)$this->value;
     }
 
     /**

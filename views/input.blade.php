@@ -1,1 +1,1 @@
-<input data-field-name="{{$el->getDotNotatedName()}}" type="{{$el->_type()}}" name="{{$el->name()}}" value="{{$el->value()}}" {!!$el->attributes()!!}>
+<input data-field-name="{{$el->getDotNotatedName()}}" type="{{$el->_type()}}" name="{{$el->name()}}" value="{{$el->getValue()}}" {!!$el->attributes()!!}>
