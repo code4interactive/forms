@@ -25,34 +25,34 @@ class AbstractFieldTest extends TestCase {
     }
 
     public function testSettingFieldValueFromConfig() {
-        $this->assertEquals('config_value', $this->_object->value());
+        $this->assertEquals('config_value', $this->_object->getValue());
     }
 
     public function testSettingFieldValueFromString() {
         $this->_object->value('test_value');
-        $this->assertEquals('test_value', $this->_object->value());
+        $this->assertEquals('test_value', $this->_object->getValue());
     }
 
     public function testSettingFieldValueFromNumeric() {
         $this->_object->value(12);
-        $this->assertEquals(12, $this->_object->value());
+        $this->assertEquals(12, $this->_object->getValue());
     }
 
     public function testSettingFieldValueFromBool() {
         $this->_object->value(true);
-        $this->assertSame((string)true, $this->_object->value());
+        $this->assertSame((string)true, $this->_object->getValue());
         $this->_object->value(false);
-        $this->assertSame((string)false, $this->_object->value());
+        $this->assertSame((string)false, $this->_object->getValue());
     }
 
     public function testSettingFieldValueFromArray() {
         $this->_object->value(['test_value','test_value2']);
-        $this->assertEquals(['test_value','test_value2'], $this->_object->value());
+        $this->assertEquals(['test_value','test_value2'], $this->_object->getValue());
     }
 
     public function testSettingFieldValueFromAssocArray() {
         $this->_object->value(['test_value'=>'Test Description','test_value2'=>'Test Description']);
-        $this->assertEquals(['test_value','test_value2'], $this->_object->value());
+        $this->assertEquals(['test_value','test_value2'], $this->_object->getValue());
     }
 
     public function testSettingFieldValueFromObject() {
@@ -60,7 +60,7 @@ class AbstractFieldTest extends TestCase {
         $genericObject->testPropertyKey = 'test_value';
 
         $this->_object->value($genericObject, 'testPropertyKey');
-        $this->assertEquals('test_value', $this->_object->value());
+        $this->assertEquals('test_value', $this->_object->getValue());
     }
 
     public function testSettingFieldValueFromCollectionOfObjects() {
@@ -70,7 +70,7 @@ class AbstractFieldTest extends TestCase {
         $genericObject2->testPropertyKey = 'test_value2';
 
         $this->_object->value(new Collection([$genericObject, $genericObject2]), 'testPropertyKey');
-        $this->assertEquals(['test_value','test_value2'], $this->_object->value());
+        $this->assertEquals(['test_value','test_value2'], $this->_object->getValue());
     }
 
     public function testAddingRules() {
